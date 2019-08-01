@@ -15,6 +15,8 @@ var sockets = [];
 var inProgress = false;
 var word = null;
 var leader = null;
+var startGameMsg = null;
+var startTimeout = null;
 
 var chooseLeader = function chooseLeader() {
   return sockets[Math.floor(Math.random() * sockets.length)];
@@ -41,10 +43,10 @@ var socketController = function socketController(socket, io) {
         inProgress = true;
         leader = chooseLeader();
         word = (0, _words.chooseWord)();
-        setTimeout(function () {
+        startGameMsg = setTimeout(function () {
           superBroadcast(_events["default"].gameStarting);
         }, 2000);
-        setTimeout(function () {
+        startTimeout = setTimeout(function () {
           superBroadcast(_events["default"].gameStarted);
           io.to(leader.id).emit(_events["default"].leaderNotif, {
             word: word
@@ -58,6 +60,15 @@ var socketController = function socketController(socket, io) {
     if (inProgress === true) {
       inProgress = false;
       superBroadcast(_events["default"].gameEnded);
+    }
+
+    if (startGameMsg !== null) {
+      clearInterval(startGameMsg);
+      startGameMsg = null;
+    }
+
+    if (startTimeout !== null) {
+      clearInterval(startTimeout);
     }
 
     setTimeout(function () {
@@ -115,7 +126,7 @@ var socketController = function socketController(socket, io) {
 
     if (message === word && socket.id !== leader.id) {
       superBroadcast(_events["default"].newMsg, {
-        message: "Winner is ".concat(socket.nickname, " Ward was ").concat(word),
+        message: "\uC2B9\uB9AC\uC790\uB294 ".concat(socket.nickname, "! \uC815\uB2F5\uC740 ").concat(word, " \uC774\uC600\uC2B5\uB2C8\uB2E4."),
         nickname: "Bot"
       });
       appPoint(socket.id);
