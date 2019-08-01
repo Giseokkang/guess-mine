@@ -2,12 +2,17 @@ import express from "express";
 import path from "path";
 import socketIO from "socket.io";
 import morgan from "morgan";
+import helmet from "helmet";
+import dotenv from "dotenv";
 import socketController from "./socketController";
 import events from "./events";
 
-const PORT = 8000;
+dotenv.config();
+
+const PORT = process.env.PORT || 8000;
 const app = express();
 
+app.use(helmet());
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 app.use(morgan("dev"));
