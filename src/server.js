@@ -5,7 +5,7 @@ import morgan from "morgan";
 import socketController from "./socketController";
 import events from "./events";
 
-const PORT = 8888;
+const PORT = 8000;
 const app = express();
 
 app.set("view engine", "pug");
