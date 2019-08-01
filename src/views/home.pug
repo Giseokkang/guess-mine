@@ -8,11 +8,15 @@ html(lang="en")
         title Guess Mine
     body
         .loginBox
+            span.welcome GuessMind에 오신걸 환영합니다! 먼저 닉네임을 설정해주세요.
             form#jsLogin
-                input(placeholder="Whats your nickname", type="text")
+                input(placeholder="닉네임을 입력해주세요.", type="text")
+            span 게임 규칙 : 랜덤으로 한 사람이 리더가 돼서 그림을 그립니다. 남은 시간내에 참가자들은 정답을 입력해주세요.
+            span 정답자에게는 10점 정답자가 존재할 시 리더 또한 5점을 얻습니다.
+            span 재밌게 플레이해주세요.
         .gameContainer#jsGame
             .main
-                #jsNotifs
+                .notifs#jsNotifs
                 
                 canvas.canvas#jsCanvas
                 .timeout#jsTimeout
@@ -32,7 +36,7 @@ html(lang="en")
                 .player__board#jsPBoard
                 ul.chat__messages#jsMessages
                 form.chat__form#jsSendMsg
-                    input(placeholder="Write a message", type="text")
+                    input(placeholder="정답을 적어주세요. 채팅도 가능합니다.", type="text")
         script.
             window.events = !{events}
         script(src="/socket.io/socket.io.js")

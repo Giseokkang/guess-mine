@@ -5,8 +5,6 @@ let sockets = [];
 let inProgress = false;
 let word = null;
 let leader = null;
-let timeout = null;
-let leftTime = 30;
 
 const chooseLeader = () => sockets[Math.floor(Math.random() * sockets.length)];
 
@@ -15,18 +13,6 @@ const socketController = (socket, io) => {
   const superBroadcast = (event, data) => io.emit(event, data);
   const sendPlayerUpdate = () =>
     superBroadcast(events.playerUpdate, { sockets });
-
-  const decreaseTime = () => {
-    leftTime -= 1;
-    if (leftTime === 0) {
-      leftTime = 30;
-      clearInterval(decreaseTime);
-    }
-  };
-
-  const NotifTimeout = () => {
-    setInterval(decreaseTime, 1000);
-  };
 
   const startGame = () => {
     if (sockets.length > 1) {
@@ -38,10 +24,8 @@ const socketController = (socket, io) => {
           superBroadcast(events.gameStarting);
         }, 2000);
         setTimeout(() => {
-          superBroadcast(events.gameStarted, { leftTime });
+          superBroadcast(events.gameStarted);
           io.to(leader.id).emit(events.leaderNotif, { word });
-          timeout = setTimeout(endGame, 30000);
-          NotifTimeout();
         }, 10000);
       }
     }
@@ -52,9 +36,7 @@ const socketController = (socket, io) => {
       inProgress = false;
       superBroadcast(events.gameEnded);
     }
-    if (timeout !== null) {
-      clearTimeout(timeout);
-    }
+
     setTimeout(() => startGame(), 2000);
   };
 
@@ -62,13 +44,15 @@ const socketController = (socket, io) => {
     sockets = sockets.map(socket => {
       if (socket.id === id) {
         socket.point += 10;
+        leader.point += 5;
       }
       return socket;
     });
     endGame();
     sendPlayerUpdate();
-    startGame();
   };
+
+  socket.on(events.sendTime, endGame);
 
   socket.on(events.setNickname, ({ nickname }) => {
     socket.nickname = nickname;

@@ -5,10 +5,16 @@ import {
   showControls,
   cleanCanvas
 } from "./paint";
+import { getSocket } from "./sockets";
 
 const board = document.getElementById("jsPBoard");
 const notifs = document.getElementById("jsNotifs");
 const timeout = document.getElementById("jsTimeout");
+
+const TIME = 30;
+
+let leftTime = TIME;
+let timer = null;
 
 const addPlayers = players => {
   board.innerHTML = "";
@@ -20,53 +26,53 @@ const addPlayers = players => {
 };
 
 const setNotifs = text => {
-  notifs.innerText = "";
-  notifs.innerText = text;
+  notifs.innerHTML = "";
+  notifs.innerHTML = text;
 };
 
-let leftTime = 30;
-
-const disableTimer = () => {
+const clearTimer = () => {
+  clearInterval(timer);
+  leftTime = TIME;
   timeout.style.display = "none";
 };
 
-const decreaseTime = () => {
+const counter = () => {
   leftTime -= 1;
   timeout.innerText = `남은 시간 : ${leftTime}초`;
-  if (leftTime === 0) {
-    leftTime = 30;
-    disableTimer();
-    clearInterval(decreaseTime);
+  if (leftTime < 1) {
+    timeout.style.display = "none";
+    leftTime = TIME;
+    clearTimer();
+    getSocket().emit(window.events.sendTime);
+  } else {
+    timeout.style.display = "block";
   }
-};
-
-const NotifTimeout = () => {
-  setInterval(decreaseTime, 1000);
 };
 
 export const handlePlayerUpdate = ({ sockets }) => addPlayers(sockets);
 
 export const handleGameStarted = () => {
+  clearInterval(timer);
+  timer = setInterval(counter, 1000);
   setNotifs("");
-  NotifTimeout();
   disableCanvas();
   hideControls();
   cleanCanvas();
 };
 
 export const handleGameEnded = () => {
-  setNotifs("Game ended");
+  setNotifs("문제 끝");
   disableCanvas();
   hideControls();
   cleanCanvas();
-  clearInterval(decreaseTime);
+  clearTimer();
 };
 
 export const handleLeaderNotif = ({ word }) => {
   enableCanvas();
   showControls();
-  const text = `You are the leader, paint: ${word}`;
+  const text = `멋진 작품을 보여주세요! <br> 그릴 단어: ${word}`;
   setNotifs(text);
 };
 
-export const handleGameStarting = () => setNotifs("Game will start soon");
+export const handleGameStarting = () => setNotifs("게임이 곧 시작됩니다!!!");
