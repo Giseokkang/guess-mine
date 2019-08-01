@@ -5,6 +5,8 @@ let sockets = [];
 let inProgress = false;
 let word = null;
 let leader = null;
+let startGameMsg = null;
+let startTimeout = null;
 
 const chooseLeader = () => sockets[Math.floor(Math.random() * sockets.length)];
 
@@ -20,10 +22,10 @@ const socketController = (socket, io) => {
         inProgress = true;
         leader = chooseLeader();
         word = chooseWord();
-        setTimeout(() => {
+        startGameMsg = setTimeout(() => {
           superBroadcast(events.gameStarting);
         }, 2000);
-        setTimeout(() => {
+        startTimeout = setTimeout(() => {
           superBroadcast(events.gameStarted);
           io.to(leader.id).emit(events.leaderNotif, { word });
         }, 10000);
@@ -36,7 +38,13 @@ const socketController = (socket, io) => {
       inProgress = false;
       superBroadcast(events.gameEnded);
     }
-
+    if (startGameMsg !== null) {
+      clearInterval(startGameMsg);
+      startGameMsg = null;
+    }
+    if (startTimeout !== null) {
+      clearInterval(startTimeout);
+    }
     setTimeout(() => startGame(), 2000);
   };
 
@@ -78,7 +86,7 @@ const socketController = (socket, io) => {
   socket.on(events.sendMsg, ({ message }) => {
     if (message === word && socket.id !== leader.id) {
       superBroadcast(events.newMsg, {
-        message: `Winner is ${socket.nickname} Ward was ${word}`,
+        message: `승리자는 ${socket.nickname}! 정답은 ${word} 이였습니다.`,
         nickname: `Bot`
       });
       appPoint(socket.id);

@@ -11,7 +11,7 @@ const board = document.getElementById("jsPBoard");
 const notifs = document.getElementById("jsNotifs");
 const timeout = document.getElementById("jsTimeout");
 
-const TIME = 30;
+const TIME = 180;
 
 let leftTime = TIME;
 let timer = null;
@@ -39,9 +39,7 @@ const clearTimer = () => {
 const counter = () => {
   leftTime -= 1;
   timeout.innerText = `남은 시간 : ${leftTime}초`;
-  if (leftTime < 1) {
-    timeout.style.display = "none";
-    leftTime = TIME;
+  if (leftTime === 0) {
     clearTimer();
     getSocket().emit(window.events.sendTime);
   } else {

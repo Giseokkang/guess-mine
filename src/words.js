@@ -101,4 +101,5 @@ const words = [
   "사탕"
 ];
 
+// eslint-disable-next-line import/prefer-default-export
 export const chooseWord = () => words[Math.floor(Math.random() * words.length)];
