@@ -37,7 +37,7 @@
     "dev:assets": "gulp",
     "build:assets": "gulp",
     "start": "babel-node src/server",
-    "prestart": "npm run build"
+    "prestart": "npm run build:assets"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
