@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        link(rel="stylesheet", href="/styles/styles.css")
+        title Guess Mine
+    body
+        .loginBox
+            span.welcome GuessMind에 오신걸 환영합니다! 먼저 닉네임을 설정해주세요.
+            form#jsLogin
+                input(placeholder="닉네임을 입력해주세요.", type="text")
+            span 게임 규칙 : 랜덤으로 한 사람이 리더가 돼서 그림을 그립니다. 남은 시간내에 참가자들은 정답을 입력해주세요.
+            span 정답자에게는 10점 정답자가 존재할 시 리더 또한 5점을 얻습니다.
+            span 재밌게 플레이해주세요.
+        .gameContainer#jsGame
+            .main
+                .notifs#jsNotifs
+                
+                canvas.canvas#jsCanvas
+                .timeout#jsTimeout
+                .controls#jsControls
+                    button#jsMode Fill
+                    .colors
+                        .color.jsColor(style="background-color:rgb(0, 0, 0)")
+                        .color.jsColor(style="background-color:rgb(255,255,255)")
+                        .color.jsColor(style="background-color:rgb(255,59,48)")
+                        .color.jsColor(style="background-color:rgb(255,149,0)")
+                        .color.jsColor(style="background-color:rgb(255,204,0)")
+                        .color.jsColor(style="background-color:rgb(76,217,100)")
+                        .color.jsColor(style="background-color:rgb(90,200,250)")
+                        .color.jsColor(style="background-color:rgb(0,122,255)")
+                        .color.jsColor(style="background-color:rgb(88,86,214)")
+            .chat
+                .player__board#jsPBoard
+                ul.chat__messages#jsMessages
+                form.chat__form#jsSendMsg
+                    input(placeholder="정답을 적어주세요. 채팅도 가능합니다.", type="text")
+        script.
+            window.events = !{events}
+        script(src="/socket.io/socket.io.js")
+        script(src="/js/main.js")
