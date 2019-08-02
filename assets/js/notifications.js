@@ -9,9 +9,9 @@ const fireNotification = (text, color) => {
 };
 
 export const handleNewUser = ({ nickname }) => {
-  fireNotification(`${nickname} just joined`, "rgb(0, 122, 255)");
+  fireNotification(`${nickname}님이 참가하셨습니다.`, "rgb(0, 122, 255)");
 };
 
 export const handleDisconnected = ({ nickname }) => {
-  fireNotification(`${nickname} just left`, "rgb(255, 149, 0)");
+  fireNotification(`${nickname}님이 떠나셨습니다.`, "rgb(255, 149, 0)");
 };
