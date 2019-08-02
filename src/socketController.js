@@ -1,5 +1,5 @@
 import events from "./events";
-import { chooseWord } from "./words";
+import { chooseWord, initWords } from "./words";
 
 let sockets = [];
 let inProgress = false;
@@ -76,9 +76,11 @@ const socketController = (socket, io) => {
     sendPlayerUpdate();
     if (sockets.length === 1) {
       endGame();
+      initWords();
     } else if (leader) {
       if (socket.id === leader.id) {
         endGame();
+        initWords();
       }
     }
   });
