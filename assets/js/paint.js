@@ -6,6 +6,7 @@ const ctx = canvas.getContext("2d");
 const controls = document.getElementById("jsControls");
 const colors = document.getElementsByClassName("jsColor");
 const mode = document.getElementById("jsMode");
+const saveBtn = document.getElementById("jsSave");
 
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 700;
@@ -70,10 +71,12 @@ function handleColorClick(event) {
 function handleModeClick() {
   if (filling === true) {
     filling = false;
-    mode.innerText = "Fill";
+    mode.innerText = "채우기";
+    canvas.style.cursor = "pointer";
   } else {
     filling = true;
-    mode.innerText = "Paint";
+    mode.innerText = "그리기";
+    canvas.style.cursor = "grab";
   }
 }
 
@@ -97,6 +100,15 @@ function handleCM(event) {
   event.preventDefault();
 }
 
+function handleSaveClick() {
+  const image = canvas.toDataURL();
+  const link = document.createElement("a");
+  link.href = image;
+  console.log(image);
+  link.download = "GuessMind[🌄]";
+  link.click();
+}
+
 if (canvas) {
   canvas.addEventListener("mousemove", onMouseMove);
   canvas.addEventListener("mousedown", startPainting);
@@ -104,6 +116,10 @@ if (canvas) {
   canvas.addEventListener("mouseleave", stopPainting);
   canvas.addEventListener("click", handleCanvasClick);
   canvas.addEventListener("contextmenu", handleCM);
+}
+
+if (saveBtn) {
+  saveBtn.addEventListener("click", handleSaveClick);
 }
 
 Array.from(colors).forEach(color =>

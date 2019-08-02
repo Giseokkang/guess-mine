@@ -115,9 +115,11 @@ var socketController = function socketController(socket, io) {
 
     if (sockets.length === 1) {
       endGame();
+      (0, _words.initWords)();
     } else if (leader) {
       if (socket.id === leader.id) {
         endGame();
+        (0, _words.initWords)();
       }
     }
   });
