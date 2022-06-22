@@ -37,7 +37,7 @@
     "dotenv": "^8.0.0",
     "helmet": "^3.19.0",
     "lodash.template": ">=4.5.0",
-    "shell-quote": ">=1.6.1"
+    "shell-quote": ">=1.7.3"
   },
   "scripts": {
     "dev:server": "nodemon --exec babel-node src/server --ignore assets/ --ignore src/static",
