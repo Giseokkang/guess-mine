@@ -20,7 +20,7 @@
     "@babel/preset-env": "^7.5.5",
     "babelify": "^10.0.0",
     "del": "^5.0.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^6.1.0",
     "gulp-csso": "^3.0.1",
